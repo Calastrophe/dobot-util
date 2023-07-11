@@ -7,6 +7,7 @@ from .types import *
 # TODO: The outer dashboard classes will implement all shared functionality, but the CR version will have additional methods.
 # TODO: A neater way of sharing methods across models.
 
+# TODO: A better naming convention
 
 # We leave it upon the caller of the API to see if they care about the errors.
 # There should be no error handling inside of this API.
@@ -69,6 +70,28 @@ class Movement(DobotSocketConnection):
         self, x: float, y: float, z: float, rx: float, ry: float, rz:float, x2:float, y2: float, z2: float, rx2: float, ry2: float, rz2:float
     ) -> Optional[DobotError]:
         opt_error, ret_val = self.send_command(f"Arc({x}, {y}, {z}, {rx}, {ry}, {rz}, {x2}, {y2}, {z2}, {rx2}, {ry2}, {rz2})")
+        return opt_error
+    
+    # Sync
+    def sync(self) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command("Sync()")
+        return opt_error
+    
+    # RelMovJUser
+    def relative_move_joint(self, offx: float, offy: float, offz: float, offrx: float, offry: float, offrz: float, user_index: int) -> Optional[DobotError]:
+        user_index = clamp(user_index, 0, 9)
+        opt_error, ret_val = self.send_command(f"RelMovJUser({offx}, {offy}, {offz}, {offrx}, {offry}, {offrz}, {user_index})")
+        return opt_error
+
+    # RelMovLUser
+    def relative_linear_joint(self, offx: float, offy: float, offz: float, offrx: float, offry: float, offrz: float, user_index: int) -> Optional[DobotError]:
+        user_index = clamp(user_index, 0, 9)
+        opt_error, ret_val = self.send_command(f"RelMovLUser({offx}, {offy}, {offz}, {offrx}, {offry}, {offrz}, {user_index})")
+        return opt_error
+
+    # RelJointMovJ
+    def relative_joint_motion(self, off1: float, off2: float, off3: float, off4: float, off5: float, off6: float) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command(f"RelJointMovJ({off1}, {off2}, {off3}, {off4}, {off5}, {off6})")
         return opt_error
 
     # MoveJog
