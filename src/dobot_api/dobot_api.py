@@ -46,16 +46,9 @@ class Movement(DobotSocketConnection):
 
     # JointMovJ
     def joint_to_joint_move(self, joints: list[float]) -> Optional[DobotError]:
-        amount_of_joints = len(joints)
-        if amount_of_joints == 4:
-            command = f"JointMovJ({joints[0]}, {joints[1]}, {joints[2]}, {joints[3]})"
-        elif amount_of_joints == 6:
-            command = f"JointMovJ({joints[0]}, {joints[1]}, {joints[2]}, {joints[3]}, {joints[4]}, {joints[5]})"
-        else:
-            return DobotError.PARAMETER_NUM_ERROR
+        command = ', '.join([str(joint) for joint in joints])
         opt_error, ret_val = self.send_command(command)
         return opt_error
-
 
     # MovL
     def move_linear(
