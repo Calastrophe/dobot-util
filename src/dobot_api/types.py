@@ -53,16 +53,16 @@ class RobotMode(IntEnum):
     JOG = 11
 
 class JointSelection(StrEnum):
-    J1NEG = "J1-"
-    J1POS = "J1+"
-    J2NEG = "J2-"
-    J2POS = "J2+"
-    J3NEG = "J3-"
-    J3POS = "J3+"
-    J4NEG = "J4-"
-    J4POS = "J4+"
-    J5NEG = "J5-"
-    J5POS = "J5+"
+    J1NEG = "j1-"
+    J1POS = "j1+"
+    J2NEG = "j2-"
+    J2POS = "j2+"
+    J3NEG = "j3-"
+    J3POS = "j3+"
+    J4NEG = "j4-"
+    J4POS = "j4+"
+    J5NEG = "j5-"
+    J5POS = "j5+"
 
 
 class RobotType(IntEnum):
