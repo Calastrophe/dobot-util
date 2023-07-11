@@ -29,7 +29,7 @@ class DobotSocketConnection:
             return (None, return_value)
         else:
             # It will panic here if errorID is not impl'd
-            return (DobotError(errorID), return_value)
+            return (DobotError(errorID), return_value[1:-1])
 
         
 def clamp(val: int, local_min: int, local_max: int) -> int:

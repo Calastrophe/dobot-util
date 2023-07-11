@@ -51,8 +51,6 @@ class Movement(DobotSocketConnection):
         opt_error, ret_val = self.send_command(command)
         return opt_error
 
-
-
     # MovL
     def move_linear(
         self, x: float, y: float, z: float, rx: float, ry: float, rz: float
