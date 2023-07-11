@@ -46,7 +46,8 @@ class Movement(DobotSocketConnection):
 
     # JointMovJ
     def joint_to_joint_move(self, joints: list[float]) -> Optional[DobotError]:
-        command = ', '.join([str(joint) for joint in joints])
+        joint_str = ', '.join([str(joint) for joint in joints])
+        command = f"JointMovJ({joint_str})"
         opt_error, ret_val = self.send_command(command)
         return opt_error
 
@@ -219,3 +220,6 @@ class Feedback(DobotSocketConnection):
     def __init__(self, ip: str):
         super().__init__(ip, REALTIME_FEEDBACK_PORT)
     
+
+
+
