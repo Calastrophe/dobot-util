@@ -26,7 +26,7 @@ class DobotSocketConnection:
         errorID: int = int(split_response[0].strip())
         return_value: str = split_response[1].strip()
         if errorID == 0:
-            return (None, return_value)
+            return (None, return_value[1:-1])
         else:
             # It will panic here if errorID is not impl'd
             return (DobotError(errorID), return_value[1:-1])
