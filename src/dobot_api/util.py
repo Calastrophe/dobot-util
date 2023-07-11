@@ -1,7 +1,7 @@
 import socket
 import logging as log
 from typing import Optional, Tuple
-from constants import DobotError
+from .types import DobotError
 
 class DobotSocketConnection:
     def __init__(self, ip: str, port: int):

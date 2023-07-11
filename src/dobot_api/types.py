@@ -1,4 +1,6 @@
 from enum import IntEnum, auto
+from .util import clamp
+from dataclasses import dataclass
 from strenum import StrEnum
 
 
@@ -19,6 +21,19 @@ class DobotError(IntEnum):
     PARAMETER_RANGE_INCORRECT = -40000
     FIRST_PARAM_RANGE = -40001
     SECOND_PARAM_RANGE = -40002
+
+@dataclass
+class IOPort:
+    mode: int
+    distance: int
+    index: int
+    status: int
+
+    def __post_init__(self, mode: int, distance: int, index: int, status: int):
+        self.mode = clamp(mode, 0, 1)
+        self.distance = clamp(distance, 0, 100)
+        self.index = clamp(index, 1, 24)
+        self.status = clamp(status, 0, 1)
 
 class RobotMode(IntEnum):
     INIT = 1

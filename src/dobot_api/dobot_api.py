@@ -1,7 +1,7 @@
 import logging as log
 from typing import Optional
-from util import *
-from constants import *
+from .util import *
+from .types import *
 
 
 # TODO: The outer dashboard classes will implement all shared functionality, but the CR version will have additional methods.
@@ -30,24 +30,51 @@ class Movement(DobotSocketConnection):
     def move_joint(
         self, x: float, y: float, z: float, rx: float, ry: float, rz: float
     ) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command(
-            "MovJ({:f}, {:f}, {:f}, {:f}, {:f}, {:f})".format(x, y, z, rx, ry, rz)
-        )
-        return error_id
+        opt_error, ret_val = self.send_command(f"MovJ({x}, {y}, {z}, {rx}, {ry}, {rz})")
+        return opt_error
+
+    # MovJIO
+    def move_joint_io(
+        self, x: float, y: float, z: float, rx: float, ry: float, rz: float, io_ports: list[IOPort]
+    ) -> Optional[DobotError]:
+        command = f"MovJIO({x}, {y}, {z}, {rx}, {ry}, {rz}"
+        if io_ports:
+            for io_port in io_ports:
+                command += f",{{{io_port.mode}, {io_port.distance}, {io_port.index}, {io_port.status}}}" 
+        command += ")"
+        opt_error, ret_val = self.send_command(command)
+        return opt_error
 
     # MovL
     def move_linear(
         self, x: float, y: float, z: float, rx: float, ry: float, rz: float
     ) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command(
-            "MovL({:f}, {:f}, {:f}, {:f}, {:f}, {:f})".format(x, y, z, rx, ry, rz)
-        )
-        return error_id
+        opt_error, ret_val = self.send_command(f"MovL({x}, {y}, {z}, {rx}, {ry}, {rz})")
+        return opt_error
+
+    # MovLIO
+    def move_linear_io(
+        self, x: float, y: float, z: float, rx: float, ry: float, rz: float, io_ports: list[IOPort]
+    ) -> Optional[DobotError]:
+        command = f"MovLIO({x}, {y}, {z}, {rx}, {ry}, {rz}"
+        if io_ports:
+            for io_port in io_ports:
+                command += f",{{{io_port.mode}, {io_port.distance}, {io_port.index}, {io_port.status}}}" 
+        command += ")"
+        opt_error, ret_val = self.send_command(command)
+        return opt_error
+    
+    # Arc
+    def move_arc(
+        self, x: float, y: float, z: float, rx: float, ry: float, rz:float, x2:float, y2: float, z2: float, rx2: float, ry2: float, rz2:float
+    ) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command(f"Arc({x}, {y}, {z}, {rx}, {ry}, {rz}, {x2}, {y2}, {z2}, {rx2}, {ry2}, {rz2})")
+        return opt_error
 
     # MoveJog
     def move_jog(self, joint: JointSelection) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("MovJog({})".format(joint))
-        return error_id
+        opt_error, ret_val = self.send_command(f"MovJog({joint})")
+        return opt_error
 
 
 class Dashboard(DobotSocketConnection):
@@ -55,73 +82,113 @@ class Dashboard(DobotSocketConnection):
         super().__init__(ip, DASHBOARD_PORT)
 
     def turn_on(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("PowerOn()")
-        return error_id
+        opt_error, ret_val = self.send_command("PowerOn()")
+        return opt_error
 
     def enable(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("EnableRobot()")
-        return error_id
+        opt_error, ret_val = self.send_command("EnableRobot()")
+        return opt_error
 
     def disable(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("DisableRobot()")
-        return error_id
+        opt_error, ret_val = self.send_command("DisableRobot()")
+        return opt_error
 
     def reset(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("ResetRobot()")
-        return error_id
+        opt_error, ret_val = self.send_command("ResetRobot()")
+        return opt_error
 
     def clear_errors(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("ClearError()")
-        return error_id
+        opt_error, ret_val = self.send_command("ClearError()")
+        return opt_error
 
     def emergency_stop(self) -> Optional[DobotError]:
-        error_id, ret_val = self.send_command("EmergencyStop()")
-        return error_id
+        opt_error, ret_val = self.send_command("EmergencyStop()")
+        return opt_error
 
     def robot_mode(self) -> DobotError | RobotMode:
-        error_id, ret_val = self.send_command("RobotMode()")
-        if error_id:
-            return error_id
+        opt_error, ret_val = self.send_command("RobotMode()")
+        if opt_error:
+            return opt_error
         else:
-            # TODO: Handle this if error'd
+            # NOTE: If this fails, then we have an uncovered error.
             return RobotMode(int(ret_val))
     
     def set_linear_accel(self, rate: int) -> Optional[DobotError]:
         rate = clamp(rate, 1, 100)
-        error_id, ret_val = self.send_command("AccL({:d})".format(rate))
-        return error_id
+        opt_error, ret_val = self.send_command(f"AccL({rate})")
+        return opt_error
 
     def set_joint_accel(self, rate: int) -> Optional[DobotError]:
         rate = clamp(rate, 1, 100)
-        error_id, ret_val = self.send_command("AccJ({:d})".format(rate))
-        return error_id
+        opt_error, ret_val = self.send_command(f"AccJ({rate})")
+        return opt_error
     
     def set_linear_velocity(self, rate: int) -> Optional[DobotError]:
         rate = clamp(rate, 1, 100)
-        error_id, ret_val = self.send_command("SpeedL({:d})".format(rate))
-        return error_id
+        opt_error, ret_val = self.send_command(f"SpeedL({rate})")
+        return opt_error
 
     def set_joint_velocity(self, rate: int) -> Optional[DobotError]:
         rate = clamp(rate, 1, 100)
-        error_id, ret_val = self.send_command("SpeedJ({:d})".format(rate))
-        return error_id
+        opt_error, ret_val = self.send_command(f"SpeedJ({rate})")
+        return opt_error
 
     def set_speedfactor(self, ratio: int) -> Optional[DobotError]:
         ratio = clamp(ratio, 1, 100)
-        error_id, ret_val = self.send_command("SpeedFactor({:d})".format(ratio))
-        return error_id
+        opt_error, ret_val = self.send_command(f"SpeedFactor({ratio})")
+        return opt_error
+    
+    def set_arc_params(self, index: int) -> Optional[DobotError]:
+        index = clamp(index, 0, 9)
+        opt_error, ret_val = self.send_command(f"Arch({index})")
+        return opt_error
+
+    def set_continuous_path(self, ratio: int) -> Optional[DobotError]:
+        ratio = clamp(ratio, 1, 100)
+        opt_error, ret_val = self.send_command(f"CP({ratio})")
+        return opt_error
 
     def set_user(self, index: int) -> Optional[DobotError]:
         index = clamp(index, 0, 9)
-        error_id, ret_val = self.send_command("User({:d})".format(index))
-        return error_id
+        opt_error, ret_val = self.send_command(f"User({index})")
+        return opt_error
 
     def set_tool(self, index: int) -> Optional[DobotError]:
         index = clamp(index, 0, 9)
-        error_id, ret_val = self.send_command("Tool({:d})".format(index))
-        return error_id
+        opt_error, ret_val = self.send_command(f"Tool({index})")
+        return opt_error
     
+    def set_payload(self, weight: float, inertia: float) -> Optional[DobotError]:
+        # TODO: Figure out acceptable ranges of weights and inertias for each model.
+        opt_error, ret_val = self.send_command(f"PayLoad({weight, inertia})")
+        return opt_error
+    
+    def set_digital_output(self, index: int, status: int) -> Optional[DobotError]:
+        status = clamp(status, 0, 1)
+        opt_error, ret_val = self.send_command(f"DO({index}, {status})")
+        return opt_error
+    
+    def run_script(self, name: str) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command(f"RunScript({name})")
+        return opt_error
+    
+    def stop_script(self) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command("StopScript()")
+        return opt_error
+
+    def pause_script(self) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command("PauseScript()")
+        return opt_error
+
+    def continue_script(self) -> Optional[DobotError]:
+        opt_error, ret_val = self.send_command("ContinueScript()")
+        return opt_error
+
+
+# TODO: Create a numpy type which houses all needed values
+# NOTE: Different for CR version
    
 class Feedback(DobotSocketConnection):
     def __init__(self, ip: str):
         super().__init__(ip, REALTIME_FEEDBACK_PORT)
+    
