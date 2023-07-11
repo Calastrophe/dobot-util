@@ -94,7 +94,7 @@ class Movement(DobotSocketConnection):
 
     # MoveJog
     def move_jog(self, joint: JointSelection) -> Optional[DobotError]:
-        opt_error, ret_val = self.send_command(f"MovJog({joint})")
+        opt_error, ret_val = self.send_command(f'MovJog("{joint}")')
         return opt_error
 
 
