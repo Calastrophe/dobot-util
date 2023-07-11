@@ -1,5 +1,5 @@
-from enum import IntEnum, auto
-from .util import clamp
+import logging as log
+from enum import IntEnum
 from dataclasses import dataclass
 from strenum import StrEnum
 
@@ -30,10 +30,14 @@ class IOPort:
     status: int
 
     def __post_init__(self, mode: int, distance: int, index: int, status: int):
-        self.mode = clamp(mode, 0, 1)
-        self.distance = clamp(distance, 0, 100)
-        self.index = clamp(index, 1, 24)
-        self.status = clamp(status, 0, 1)
+        self.mode = self.__clamp(mode, 0, 1)
+        self.distance = self.__clamp(distance, 0, 100)
+        self.index = self.__clamp(index, 1, 24)
+        self.status = self.__clamp(status, 0, 1)
+    
+    def __clamp(self, val: int, local_min: int, local_max: int) -> int:
+        log.info(f"{val} was clamped to the range {local_min}, {local_max}")
+        return max(local_min, min(val, local_max))
 
 class RobotMode(IntEnum):
     INIT = 1
