@@ -6,6 +6,7 @@ from .types import DobotError
 class DobotSocketConnection:
     def __init__(self, ip: str, port: int):
         self.socket = socket.socket()
+        self.socket.settimeout(10.0)
         self.socket.connect((ip, port))
         log.debug("Connection established")
 

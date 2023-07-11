@@ -5,8 +5,6 @@ from .types import *
 
 
 # TODO: The outer dashboard classes will implement all shared functionality, but the CR version will have additional methods.
-# TODO: A neater way of sharing methods across models.
-
 # TODO: A better naming convention
 
 # We leave it upon the caller of the API to see if they care about the errors.
