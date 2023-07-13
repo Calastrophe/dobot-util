@@ -10,15 +10,16 @@ class DobotSocketConnection:
         self.socket.connect((ip, port))
         log.debug("Connection established")
 
-    "Sends a desired command over the socket connection"
+    " Sends a desired command over the socket connection and returns the potential error and return value in the form of a string "
+    " Example return: 0, {}, EnableRobot() -> (None, "") "
     def send_command(self, cmd: str) -> Tuple[Optional[DobotError], str]:
         encoded_cmd = cmd.encode("utf-8")
         self.socket.send(encoded_cmd)
         log.debug(f'The command "{encoded_cmd}" has been sent.')
-        return self.await_reply()
+        return self.__await_reply()
 
-    # This is a quick and easy solution, but may not cover all ErrorIDs.
-    def await_reply(self) -> Tuple[Optional[DobotError], str]:
+    " This is a quick solution, but may not cover all errors - in which it might panic. "
+    def __await_reply(self) -> Tuple[Optional[DobotError], str]:
         data = self.socket.recv(1024)
         response: str = str(data, encoding="utf-8")
         log.debug(f'The return message was "{response}".')
@@ -28,8 +29,15 @@ class DobotSocketConnection:
         if errorID == 0:
             return (None, return_value[1:-1])
         else:
-            # It will panic here if errorID is not impl'd
+            " This will panic if there is no error for the value of errorID, make a pull request. "
             return (DobotError(errorID), return_value[1:-1])
+    
+    def close(self):
+        if self.socket:
+            self.socket.close()
+
+    def __del__(self):
+        self.close()
 
         
 def clamp(val: int, local_min: int, local_max: int) -> int:

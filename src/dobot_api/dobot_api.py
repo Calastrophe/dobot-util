@@ -133,6 +133,12 @@ class Dashboard(DobotSocketConnection):
         opt_error, ret_val = self.send_command("EmergencyStop()")
         return opt_error
 
+    # TODO: Cover all possible Error IDs
+    def get_error_id(self):
+        opt_error, ret_val = self.send_command("GetErrorID()")
+        log.info(f"Error IDs : {ret_val}")
+        return opt_error
+    
     def robot_mode(self) -> DobotError | RobotMode:
         opt_error, ret_val = self.send_command("RobotMode()")
         if opt_error:
