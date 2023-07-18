@@ -138,6 +138,20 @@ class Dashboard(DobotSocketConnection):
         opt_error, ret_val = self.send_command("GetErrorID()")
         log.info(f"Error IDs : {ret_val}")
         return opt_error
+
+    def get_digital_input(self, index: int) -> DobotError | int:
+        index = clamp(index, 1, 32)
+        opt_error, ret_val = self.send_command(f"DI({index})")
+        try:
+            return int(ret_val)
+        except:
+            return opt_error
+
+    def set_digital_output(self, index: int, val: int) -> Optional[DobotError]:
+        index = clamp(index, 1, 16)
+        val = clamp(val, 0, 1)
+        opt_error, ret_val = self.send_command(f"DO({index}, {val})")
+        return opt_error
     
     def robot_mode(self) -> DobotError | RobotMode:
         opt_error, ret_val = self.send_command("RobotMode()")
@@ -225,4 +239,5 @@ class Dashboard(DobotSocketConnection):
 class Feedback(DobotSocketConnection):
     def __init__(self, ip: str):
         super().__init__(ip, REALTIME_FEEDBACK_PORT)
+    
     
