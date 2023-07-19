@@ -4,9 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dobot_utils"
-version = "1.0.0"
+version = "1.0.1"
 authors = [{ name = "Calastrophe", email = "vmxoperation@proton.me" }]
-description = "A better implementation of the Dobot API in Python"
+description = "An ergonomic and type-hinted Python API for Dobot Products TCP-IP Protocol"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ['numpy', 'StrEnum']
