@@ -4,12 +4,12 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dobot-utils"
-version = "1.0.1"
+version = "1.0.2"
 authors = [{ name = "Calastrophe", email = "vmxoperation@proton.me" }]
 description = "An ergonomic and type-hinted Python API for Dobot Products TCP-IP Protocol"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ['numpy', 'StrEnum']
+dependencies = ['numpy', 'StrEnum', 'ikpy']
 classifiers = [
     "Programming Language :: Python :: 3.10",
     "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
