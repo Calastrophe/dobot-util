@@ -41,16 +41,6 @@ class DobotSocketConnection:
     def __del__(self):
         self.close()
 
-class Simulation:
-    def __init__(self, urdf_file: Path) -> None:
-        self.chain: Chain = Chain.from_urdf_file(urdf_file)
-    
-    # Returns the joint angles needed to move the end-effector to needed position.
-    def compute(self, target_position: list[float]) -> list[float]:
-        assert len(target_position) == 3
-        return self.chain.inverse_kinematics(target_position)
-    
-
         
 def clamp(val: int, local_min: int, local_max: int) -> int:
     log.info(f"{val} was clamped to the range {local_min}, {local_max}")
