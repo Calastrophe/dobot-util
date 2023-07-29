@@ -8,7 +8,7 @@ Unique to this API, each method could potentially return an error, this allows f
 
 ## How to use this API?
 
-To use the API, just simply download the PyPi package through `pip install dobot-utils`.
+To use the API, just simply download the PyPi package through `pip install dobot-util`.
 
 After installing the package, you can import the `Dobot` class and the `DobotError` type.
 

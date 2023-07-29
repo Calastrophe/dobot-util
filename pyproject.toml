@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dobot_utils"
+name = "dobot_util"
 version = "1.0.0"
 authors = [{ name = "Calastrophe", email = "vmxoperation@proton.me" }]
 description = "An ergonomic and type-hinted Python API for Dobot Products TCP-IP Protocol"
@@ -17,5 +17,5 @@ classifiers = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/Calastrophe/dobot-utils"
-"Bug Tracker" = "https://github.com/Calastrophe/dobot-utils/issues"
+"Homepage" = "https://github.com/Calastrophe/dobot-util"
+"Bug Tracker" = "https://github.com/Calastrophe/dobot-util/issues"
