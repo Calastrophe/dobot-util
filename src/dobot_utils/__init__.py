@@ -1,2 +1,2 @@
 
-from .dobot_api import Dobot, DobotError
+from .api import Dobot, DobotError
