@@ -3,7 +3,7 @@ import logging as log
 from pathlib import Path
 from ikpy.chain import Chain
 from typing import Optional, Tuple
-from .types import DobotError
+from .types import DobotError, URDF
 
 class DobotSocketConnection:
     def __init__(self, ip: str, port: int):
@@ -40,6 +40,10 @@ class DobotSocketConnection:
 
     def __del__(self):
         self.close()
+
+class Simulator:
+    def __init__(self, fn: URDF) -> None:
+        self.chain = Chain.from_urdf_file(fn)
 
         
 def clamp(val: int, local_min: int, local_max: int) -> int:

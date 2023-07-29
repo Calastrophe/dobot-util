@@ -13,12 +13,13 @@ from .types import *
 
 
 class Dobot:
-    def __init__(self, ip: str, is_cr: bool = False, logging: bool = False, log_name: str = "output.log", log_level = log.DEBUG):
+    def __init__(self, ip: str, urdf_file: Optional[URDF] = None, is_cr: bool = False, logging: bool = False, log_name: str = "output.log", log_level = log.DEBUG):
         if logging:
             log.basicConfig(filename=log_name, level=log_level)
-        self.movement = Movement(ip)
-        self.feedback = Feedback(ip)
-        self.dashboard = Dashboard(ip)
+        self.simulator: Optional[Simulator] = Simulator(urdf_file) if urdf_file else None
+        self.movement: Movement = Movement(ip)
+        self.feedback: Feedback = Feedback(ip)
+        self.dashboard: Dashboard = Dashboard(ip)
 
 
 class Movement(DobotSocketConnection):
@@ -239,5 +240,4 @@ class Dashboard(DobotSocketConnection):
 class Feedback(DobotSocketConnection):
     def __init__(self, ip: str):
         super().__init__(ip, REALTIME_FEEDBACK_PORT)
-    
     

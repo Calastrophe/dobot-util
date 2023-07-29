@@ -82,6 +82,9 @@ class RobotType(IntEnum):
     CR5V2 = 115
     CR10V2 = 120
 
+class URDF(StrEnum):
+    M1PRO = "urdf/m1pro_description.urdf"
+
 FeedbackType = np.dtype([(
     'len',
     np.int64,
