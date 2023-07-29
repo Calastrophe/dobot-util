@@ -3,8 +3,8 @@ requires = ["setuptools>=61.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dobot-utils"
-version = "1.0.2"
+name = "dobot_utils"
+version = "1.0.0"
 authors = [{ name = "Calastrophe", email = "vmxoperation@proton.me" }]
 description = "An ergonomic and type-hinted Python API for Dobot Products TCP-IP Protocol"
 readme = "README.md"
