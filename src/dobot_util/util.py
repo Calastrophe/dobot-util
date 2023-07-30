@@ -45,6 +45,9 @@ class Simulator:
     def __init__(self, fn: URDF) -> None:
         self.chain = Chain.from_urdf_file(fn)
 
+    def compute(self, target_position: list[float]) -> list[float]:
+        self.chain.inverse_kinematics(target_position)
+
         
 def clamp(val: int, local_min: int, local_max: int) -> int:
     log.info(f"{val} was clamped to the range {local_min}, {local_max}")

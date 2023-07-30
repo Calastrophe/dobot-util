@@ -16,16 +16,16 @@ class Dobot:
     def __init__(self, ip: str, urdf_file: Optional[URDF] = None, is_cr: bool = False, logging: bool = False, log_name: str = "output.log", log_level = log.DEBUG):
         if logging:
             log.basicConfig(filename=log_name, level=log_level)
-        self.simulator: Optional[Simulator] = Simulator(urdf_file) if urdf_file else None
-        self.movement: Movement = Movement(ip)
+        self.movement: Movement = Movement(ip, urdf_file)
         self.feedback: Feedback = Feedback(ip)
         self.dashboard: Dashboard = Dashboard(ip)
-
+    
 
 class Movement(DobotSocketConnection):
-    def __init__(self, ip: str):
+    def __init__(self, ip: str, urdf_file: URDF):
         super().__init__(ip, MOVEMENT_PORT)
-
+        self.simulator = Simulator(urdf_file) if urdf_file else None
+    
     # MovJ
     def move_joint(
         self, x: float, y: float, z: float, rx: float, ry: float, rz: float
